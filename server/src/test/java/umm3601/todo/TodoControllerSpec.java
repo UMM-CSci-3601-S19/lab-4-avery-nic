@@ -85,4 +85,20 @@ public class TodoControllerSpec {
     return ((BsonString) doc.get("owner")).getValue();
   }
 
+  @Test
+  public void getAllTodos() {
+    Map<String, String[]> emptyMap = new HashMap<>();
+    String jsonResult = todoController.getTodos(emptyMap);
+    BsonArray docs = parseJsonArray(jsonResult);
+
+    assertEquals("Should be 4 todos", 4, docs.size());
+    List<String> owners = docs
+      .stream()
+      .map(TodoControllerSpec::getOwner)
+      .sorted()
+      .collect(Collectors.toList());
+    List<String> expectedOwners = Arrays.asList("Chris", "Pat", "Jamie", "Geoffrey");
+    assertEquals("Owners should match", expectedOwners, owners);
+  }
+
 }

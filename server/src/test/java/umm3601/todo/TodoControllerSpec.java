@@ -66,4 +66,23 @@ public class TodoControllerSpec {
     todoController = new TodoController(db);
   }
 
+  // http://stackoverflow.com/questions/34436952/json-parse-equivalent-in-mongo-driver-3-x-for-java
+  private BsonArray parseJsonArray(String json) {
+    final CodecRegistry codecRegistry
+      = CodecRegistries.fromProviders(Arrays.asList(
+      new ValueCodecProvider(),
+      new BsonValueCodecProvider(),
+      new DocumentCodecProvider()));
+
+    JsonReader reader = new JsonReader(json);
+    BsonArrayCodec arrayReader = new BsonArrayCodec(codecRegistry);
+
+    return arrayReader.decode(reader, DecoderContext.builder().build());
+  }
+
+  private static String getOwner(BsonValue val) {
+    BsonDocument doc = val.asDocument();
+    return ((BsonString) doc.get("owner")).getValue();
+  }
+
 }

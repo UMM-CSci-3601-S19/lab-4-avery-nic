@@ -36,19 +36,19 @@ public class TodoControllerSpec {
     List<Document> testTodos = new ArrayList<>();
     testTodos.add(Document.parse("{\n" +
       "                    owner: \"Chris\",\n" +
-      "                    body: This is Chris's task,\n" +
+      "                    body: \"This is Chris's task\",\n" +
       "                    status: true,\n" +
       "                    category: \"software design\"\n" +
       "                }"));
     testTodos.add(Document.parse("{\n" +
       "                    owner: \"Pat\",\n" +
-      "                    body: This is Pat's todo,\n" +
+      "                    body: \"This is Pat's todo\",\n" +
       "                    status: false,\n" +
       "                    category: \"video games\"\n" +
       "                }"));
     testTodos.add(Document.parse("{\n" +
       "                    owner: \"Jamie\",\n" +
-      "                    body: This is Jamie's todo,\n" +
+      "                    body: \"This is Jamie's todo\",\n" +
       "                    status: true,\n" +
       "                    category: \"groceries\"\n" +
       "                }"));
@@ -97,7 +97,7 @@ public class TodoControllerSpec {
       .map(TodoControllerSpec::getOwner)
       .sorted()
       .collect(Collectors.toList());
-    List<String> expectedOwners = Arrays.asList("Chris", "Pat", "Jamie", "Geoffrey");
+    List<String> expectedOwners = Arrays.asList("Chris", "Geoffrey", "Jamie", "Pat");
     assertEquals("Owners should match", expectedOwners, owners);
   }
 

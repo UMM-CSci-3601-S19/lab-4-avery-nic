@@ -11,7 +11,11 @@ import {Observable} from 'rxjs/Observable';
 export class TodoListComponent implements OnInit {
   public todos: Todo[];
 
-  constructor(public todoListService: TodoListService) { }
+  public todoOwner: string;
+
+  constructor(public todoListService: TodoListService) {
+
+  }
 
   refreshTodos(): Observable<Todo[]> {
     const todos: Observable<Todo[]> = this.todoListService.getTodos();
@@ -27,7 +31,7 @@ export class TodoListComponent implements OnInit {
   }
 
   loadService(): void {
-    this.todoListService.getTodos().subscribe(
+    this.todoListService.getTodos(this.todoOwner).subscribe(
       todos => {
         this.todos = todos;
       },

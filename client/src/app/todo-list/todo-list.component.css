@@ -6,3 +6,35 @@
 #list-title {
   padding-right: 14px;
 }
+
+#todo-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.todo {
+  flex-basis: 22%;
+}
+
+.true {
+  float: right;
+  display: inline;
+  color: #009926;
+}
+
+.false {
+  float: right;
+  display: inline;
+  color: #a61717;
+}
+
+.category{
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #0086B3;
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 16px;
+}

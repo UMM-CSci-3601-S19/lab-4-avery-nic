@@ -26,21 +26,21 @@ describe('TodoListComponent', () => {
         {
           _id: 'chris_todo_id',
           owner: 'Chris',
-          body: "This is Chris's todo",
+          body: "This is for Chris",
           status: true,
           category: 'software design'
         },
         {
           _id: 'pat_todo_id',
           owner: 'Pat',
-          body: "This is Pat's todo",
+          body: "This is for Pat",
           status: false,
           category: 'groceries'
         },
         {
           _id: 'jamie_todo_id',
           owner: 'Jamie',
-          body: "This is Jamie's todo",
+          body: "This is for Jamie",
           status: true,
           category: 'video games'
         }
@@ -89,9 +89,16 @@ describe('TodoListComponent', () => {
 
   it('todo list filters by category', () => {
     expect(todoList.filteredTodos.length).toBe(3);
-    todoList.todoCategory = 'groceries';
+    todoList.todoCategory = 'c';
     todoList.refreshTodos().subscribe(() => {
       expect(todoList.filteredTodos.length).toBe(1);
+    });
+  });
+  it('todo list filters by body', () => {
+    expect(todoList.filteredTodos.length).toBe(3);
+    todoList.todoBody = 't';
+    todoList.refreshTodos().subscribe(() => {
+      expect(todoList.filteredTodos.length).toBe(3);
     });
   });
 });

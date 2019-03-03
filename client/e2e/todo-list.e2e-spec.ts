@@ -25,4 +25,11 @@ describe('Todo list', () => {
   it('should get and highlight Todos title attribute', () => {
     expect(page.getTodoTitle()).toEqual('Todos');
   });
+
+  it('should allow us to filter todos based on owner', () => {
+    page.getOwner('blanche');
+    page.getTodos().then( todos => {
+      expect(todos.length).toBe(43);
+    });
+  });
 });

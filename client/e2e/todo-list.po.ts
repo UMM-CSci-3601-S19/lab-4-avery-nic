@@ -27,5 +27,19 @@ export class TodoPage {
     return title;
   }
 
+  getOwner(owner: string) {
+    const input = element(by.id('todoOwner'));
+    input.click();
+    input.sendKeys(owner);
+    this.click('submit');
+  }
 
+  getTodos() {
+    return element.all(by.className('todo'));
+  }
+
+  click(idOfButton: string): promise.Promise<void> {
+    this.highlightElement(by.id(idOfButton));
+    return element(by.id(idOfButton)).click();
+  }
 }

@@ -32,4 +32,31 @@ describe('Todo list', () => {
       expect(todos.length).toBe(43);
     });
   });
+
+  it('should allow us to clear a search for owner and then search again', () => {
+    page.getOwner('fry');
+    page.getTodos().then(todos => {
+      expect(todos.length).toBe(61);
+    });
+    page.click('ownerClearSearch');
+    page.getTodos().then(todos => {
+      expect(todos.length).toBe(300);
+    });
+    page.getOwner('blan');
+    page.getTodos().then(todos => {
+      expect(todos.length).toBe(43);
+    });
+  });
+
+  it('should allow us to search by owner, update search string, and then search again', () => {
+    page.getOwner('a');
+    page.getTodos().then(todos => {
+      expect(todos.length).toBe(239);
+    });
+    page.field('todoOwner').sendKeys('nche');
+    page.click('submit');
+    page.getTodos().then(todos => {
+      expect(todos.length).toBe(43);
+    })
+  });
 });

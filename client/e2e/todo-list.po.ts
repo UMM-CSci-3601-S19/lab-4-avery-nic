@@ -42,4 +42,8 @@ export class TodoPage {
     this.highlightElement(by.id(idOfButton));
     return element(by.id(idOfButton)).click();
   }
+
+  field(idOfField: string) {
+    return element(by.id(idOfField));
+  }
 }

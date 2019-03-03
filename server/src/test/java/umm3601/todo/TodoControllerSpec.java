@@ -101,4 +101,23 @@ public class TodoControllerSpec {
     assertEquals("Owners should match", expectedOwners, owners);
   }
 
+  @Test
+  public void getTodoByOwner() {
+    Map<String, String[]> argMap = new HashMap<>();
+    //Mongo in TodoController is doing a regex search so can just take a Java Reg. Expression
+    //This will search the owner starting with an I or an F
+    argMap.put("owner", new String[]{"[C,P]"});
+    String jsonResult = todoController.getTodos(argMap);
+    BsonArray docs = parseJsonArray(jsonResult);
+    assertEquals("Should be 2 todos", 2, docs.size());
+    List<String> owner = docs
+      .stream()
+      .map(TodoControllerSpec::getOwner)
+      .sorted()
+      .collect(Collectors.toList());
+    List<String> expectedOwner = Arrays.asList("Chris", "Pat");
+    assertEquals("Owners should match", expectedOwner, owner);
+
+  }
+
 }

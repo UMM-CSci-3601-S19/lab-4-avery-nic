@@ -1,24 +1,38 @@
 <div layout-gt-sm="row">
   <div flex-gt-sm="80" flex-offset-gt-sm="10">
     <mat-card>
-      <mat-card-title>Todos</mat-card-title>
+      <mat-card-title id="todo-list-title">Todos</mat-card-title>
       <mat-divider></mat-divider>
-      <mat-card-content id="todo-container" *ngIf="todos; else todosError">
-        <!--the ngFor here will need to be changed to enable filtering. Currently loads all todos-->
-        <mat-card #elem class="todo"  [id]="todo._id" *ngFor="let todo of this.todos">
-          <mat-card-title>
 
-            {{todo.owner}}'s Todo
-            <div [class]="todo.status">
-              <mat-icon>check_circle</mat-icon>
-            </div>
-          </mat-card-title>
-          <mat-divider></mat-divider>
-          <mat-card-content>
-            <p>{{todo.body}}</p>
-            <div class="category">{{todo.category}}</div>
-          </mat-card-content>
-        </mat-card>
+      <mat-card-content>
+        <mat-form-field>
+          <input matInput id="todoOwner" #input type="search" placeholder="Search for owner"
+                 [(ngModel)]="todoOwner"/>
+          <button mat-button id="ownerClearSearch" type="button" *ngIf="todoOwner" matSuffix mat-icon-button
+                  aria-label="clear" (click)="todoOwner='';loadService()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <button mat-raised-button id="submit" color="primary" #input type="button" (click)="loadService()">Submit
+        </button>
+
+        <div id="todo-container" *ngIf="todos; else todosError">
+          <!--the ngFor here will need to be changed to enable filtering. Currently loads all todos-->
+          <mat-card #elem class="todo" [id]="todo._id" *ngFor="let todo of this.todos">
+            <mat-card-title>
+
+              {{todo.owner}}'s Todo
+              <div [class]="todo.status">
+                <mat-icon>check_circle</mat-icon>
+              </div>
+            </mat-card-title>
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <p>{{todo.body}}</p>
+              <div class="category">{{todo.category}}</div>
+            </mat-card-content>
+          </mat-card>
+        </div>
 
       </mat-card-content>
 

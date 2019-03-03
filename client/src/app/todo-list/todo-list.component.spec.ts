@@ -86,4 +86,12 @@ describe('TodoListComponent', () => {
   it('doesn\'t contain a todo owned by George', () => {
     expect(todoList.todos.some((todo: Todo) => todo.owner === 'George')).toBe(false);
   });
+
+  it('todo list filters by category', () => {
+    expect(todoList.filteredTodos.length).toBe(3);
+    todoList.todoCategory = 'groceries';
+    todoList.refreshTodos().subscribe(() => {
+      expect(todoList.filteredTodos.length).toBe(1);
+    });
+  });
 });

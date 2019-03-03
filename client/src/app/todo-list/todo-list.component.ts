@@ -10,11 +10,29 @@ import {Observable} from 'rxjs/Observable';
 })
 export class TodoListComponent implements OnInit {
   public todos: Todo[];
+  public filteredTodos: Todo[];
 
   public todoOwner: string;
+  public todoCategory: string;
 
   constructor(public todoListService: TodoListService) {
 
+  }
+
+  public filterTodos(searchCategory: string): Todo[]{
+
+    this.filteredTodos = this.todos;
+
+    // Filter by category
+    if (searchCategory != null) {
+      searchCategory = searchCategory.toLocaleLowerCase();
+
+      this.filteredTodos = this.filteredTodos.filter(todo => {
+        return !searchCategory || todo.category.toLocaleLowerCase().indexOf(searchCategory) !== -1;
+      });
+    }
+
+    return this.filteredTodos;
   }
 
   refreshTodos(): Observable<Todo[]> {
@@ -22,11 +40,11 @@ export class TodoListComponent implements OnInit {
     todos.subscribe(
       todos => {
         this.todos = todos;
+        this.filterTodos(this.todoCategory);
       },
       err => {
         console.log(err);
-      }
-    );
+      });
     return todos;
   }
 
@@ -34,6 +52,7 @@ export class TodoListComponent implements OnInit {
     this.todoListService.getTodos(this.todoOwner).subscribe(
       todos => {
         this.todos = todos;
+        this.filteredTodos = this.todos;
       },
       err => {
         console.log(err);

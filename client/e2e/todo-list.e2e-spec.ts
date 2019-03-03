@@ -59,4 +59,11 @@ describe('Todo list', () => {
       expect(todos.length).toBe(43);
     })
   });
+
+  it('should allow us to filter by category', () => {
+    page.typeInField('todoCategory','software');
+    page.getTodos().then(todos => {
+      expect(todos.length).toBe(74);
+    });
+  })
 });

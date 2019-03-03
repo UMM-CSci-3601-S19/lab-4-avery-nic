@@ -46,4 +46,10 @@ export class TodoPage {
   field(idOfField: string) {
     return element(by.id(idOfField));
   }
+
+  typeInField(idOfField: string, input: string) {
+    const field = element(by.id(idOfField));
+    field.click();
+    field.sendKeys(input);
+  }
 }

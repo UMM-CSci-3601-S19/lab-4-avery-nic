@@ -13,12 +13,16 @@
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
+        <mat-form-field>
+          <input matInput id="todoCategory" #input type="text" placeholder="Filter by category"
+                 (input)="todoCategory = $event.target.value">
+        </mat-form-field>
         <button mat-raised-button id="submit" color="primary" #input type="button" (click)="loadService()">Submit
         </button>
 
         <div id="todo-container" *ngIf="todos; else todosError">
           <!--the ngFor here will need to be changed to enable filtering. Currently loads all todos-->
-          <mat-card #elem class="todo" [id]="todo._id" *ngFor="let todo of this.todos">
+          <mat-card #elem class="todo" [id]="todo._id" *ngFor="let todo of this.filterTodos(todoCategory)">
             <mat-card-title>
 
               {{todo.owner}}'s Todo

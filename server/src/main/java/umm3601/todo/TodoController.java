@@ -38,4 +38,8 @@ public class TodoController {
       .map(Document::toJson)
       .collect(Collectors.joining(", ", "[", "]"));
   }
+
+  public String addNewTodo(String owner, String body, boolean status, String category) {
+    return "";
+  }
 }

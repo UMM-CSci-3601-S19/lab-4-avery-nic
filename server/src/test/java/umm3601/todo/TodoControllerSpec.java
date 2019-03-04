@@ -117,7 +117,23 @@ public class TodoControllerSpec {
       .collect(Collectors.toList());
     List<String> expectedOwner = Arrays.asList("Chris", "Pat");
     assertEquals("Owners should match", expectedOwner, owner);
-
   }
 
+  @Test
+  public void addTodoTest() {
+    String newId = todoController.addNewTodo("Alex", "This is Alex's todo", false, "video games");
+
+    assertNotNull("Add new todo should return true when todo is added", newId);
+    Map<String, String[]> argMap = new HashMap<>();
+    argMap.put("owner", new String[]{"Alex"});
+    String jsonResult = todoController.getTodos(argMap);
+    BsonArray docs = parseJsonArray(jsonResult);
+
+    List<String> owner = docs
+      .stream()
+      .map(TodoControllerSpec::getOwner)
+      .sorted()
+      .collect(Collectors.toList());
+    assertEquals("Should return todo's owner", "Alex", owner.get(0));
+  }
 }

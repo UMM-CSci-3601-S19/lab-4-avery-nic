@@ -40,7 +40,6 @@ export class TodoListComponent implements OnInit {
         return !searchBody || todo.body.toLocaleLowerCase().indexOf(searchBody) !== -1;
       });
     }
-
     return this.filteredTodos;
   }
 

@@ -1,9 +1,11 @@
 package umm3601.todo;
 
+import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -40,6 +42,25 @@ public class TodoController {
   }
 
   public String addNewTodo(String owner, String body, boolean status, String category) {
-    return "";
+
+    Document newTodo = new Document();
+    newTodo.append("owner", owner);
+    newTodo.append("body", body);
+    newTodo.append("status", status);
+    newTodo.append("category", category);
+
+    try {
+      todoCollection.insertOne(newTodo);
+      ObjectId id = newTodo.getObjectId("_id");
+      System.err.println("Successfully added new todo [_id=" + id
+        + ", owner=" + owner
+        + ", body=" + body
+        + " status=" + status
+        + " category=" + category + ']');
+      return id.toHexString();
+    } catch (MongoException me) {
+      me.printStackTrace();
+      return null;
+    }
   }
 }

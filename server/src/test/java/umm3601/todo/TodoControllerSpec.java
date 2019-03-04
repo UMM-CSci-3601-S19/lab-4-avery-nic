@@ -120,7 +120,7 @@ public class TodoControllerSpec {
   }
 
   @Test
-  public void addTodoTest() {
+  public void addNewTodo() {
     String newId = todoController.addNewTodo("Alex", "This is Alex's todo", false, "video games");
 
     assertNotNull("Add new todo should return true when todo is added", newId);

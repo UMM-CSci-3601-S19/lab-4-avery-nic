@@ -29,6 +29,13 @@ public class TodoController {
       ownerQuery.append("$options", "i");
       filterDoc.append("owner", ownerQuery);
     }
+    if (queryParams.containsKey("status")) {
+      String requestedStatus = queryParams.get("status")[0];
+      Document statusQuery = new Document();
+      statusQuery.append("$regex", requestedStatus);
+      statusQuery.append("$options", "i");
+      filterDoc.append("status", statusQuery);
+    }
 
     FindIterable<Document> matchingTodos = todoCollection.find(filterDoc);
 

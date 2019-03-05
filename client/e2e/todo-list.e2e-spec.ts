@@ -66,4 +66,16 @@ describe('Todo list', () => {
       expect(todos.length).toBe(74);
     });
   })
+  it('should allow us to filter by body', () => {
+    page.typeInField('todoBody','esse');
+    page.getTodos().then(todos => {
+      expect(todos.length).toBe(74);
+    });
+  })
+  it('should allow us to filter by status', () => {
+    page.typeInField('todoStatus','complete');
+    page.getTodos().then(todos => {
+      expect(todos.length).toBe(143);
+    });
+  })
 });

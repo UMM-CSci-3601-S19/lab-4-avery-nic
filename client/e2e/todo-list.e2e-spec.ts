@@ -69,7 +69,7 @@ describe('Todo list', () => {
   it('should allow us to filter by body', () => {
     page.typeInField('todoBody','esse');
     page.getTodos().then(todos => {
-      expect(todos.length).toBe(74);
+      expect(todos.length).toBe(77);
     });
   })
   it('should allow us to filter by status', () => {

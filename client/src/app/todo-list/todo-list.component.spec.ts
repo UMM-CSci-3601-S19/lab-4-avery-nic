@@ -10,6 +10,7 @@ import 'rxjs/add/operator/do';
 import {CustomModule} from "../custom.module";
 import {MATERIAL_COMPATIBILITY_MODE} from "@angular/material";
 import {FormsModule} from "@angular/forms";
+import {MatDialog} from '@angular/material';
 
 describe('TodoListComponent', () => {
 

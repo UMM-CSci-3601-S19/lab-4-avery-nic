@@ -120,4 +120,26 @@ describe('Todo list service: ', () => {
     expect(req.request.method).toEqual('GET');
     req.flush(targetTodo);
   });
+
+  it('adding a todo calls api/users/new', () => {
+    const new_todo_id = 'new_todo_id';
+    const newTodo: Todo = {
+      _id: '',
+      owner: 'Avery',
+      body: 'I am tired',
+      status: false,
+      category: 'wellbeing'
+    };
+
+    todoListService.addNewTodo(newTodo).subscribe(
+      id => {
+        expect(id).toBe(new_todo_id);
+      }
+    );
+
+    const expectedUrl: string = todoListService.baseUrl + '/new';
+    const req = httpTestingController.expectOne(expectedUrl);
+    expect(req.request.method).toEqual('POST');
+    req.flush(new_todo_id);
+  });
 });

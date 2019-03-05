@@ -9,6 +9,8 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import {CustomModule} from "../custom.module";
 import {MATERIAL_COMPATIBILITY_MODE} from "@angular/material";
+import {FormsModule} from "@angular/forms";
+import {MatDialog} from '@angular/material';
 
 describe('TodoListComponent', () => {
 
@@ -123,5 +125,76 @@ describe('TodoListComponent', () => {
     todoList.refreshTodos().subscribe(() => {
       expect(todoList.filteredTodos.length).toBe(1);
     });
+  });
+});
+
+describe('Adding a todo', () => {
+  let todoList: TodoListComponent;
+  let fixture: ComponentFixture<TodoListComponent>;
+  const newTodo: Todo = {
+    _id: '',
+    owner: 'Avery',
+    body: 'I am tired',
+    status: false,
+    category: 'wellbeing'
+  };
+  const newId = 'new_todo_id';
+
+  let calledTodo: Todo;
+
+  let todoListServiceStub: {
+    getTodos: () => Observable<Todo[]>,
+    addNewTodo: (newUser: Todo) => Observable<{ '$oid': string }>
+  };
+  let mockMatDialog: {
+    open: (AddUserComponent, any) => {
+      afterClosed: () => Observable<Todo>
+    };
+  };
+
+  beforeEach(() => {
+    calledTodo = null;
+    // stub UserService for test purposes
+    todoListServiceStub = {
+      getTodos: () => Observable.of([]),
+      addNewTodo: (newTodo: Todo) => {
+        calledTodo = newTodo;
+        return Observable.of({
+          '$oid': newId
+        });
+      }
+    };
+    mockMatDialog = {
+      open: () => {
+        return {
+          afterClosed: () => {
+            return Observable.of(newTodo);
+          }
+        };
+      }
+    };
+
+    TestBed.configureTestingModule({
+      imports: [FormsModule, CustomModule],
+      declarations: [TodoListComponent],
+      providers: [
+        {provide: TodoListService, useValue: todoListServiceStub},
+        {provide: MatDialog, useValue: mockMatDialog},
+        {provide: MATERIAL_COMPATIBILITY_MODE, useValue: true}]
+    });
+  });
+
+  beforeEach(async(() => {
+    TestBed.compileComponents().then(() => {
+      fixture = TestBed.createComponent(TodoListComponent);
+      todoList = fixture.componentInstance;
+      fixture.detectChanges();
+    });
+  }));
+
+  it('calls TodoListService.addNewTodo', () => {
+    expect(calledTodo).toBeNull();
+    todoList.openDialog();
+    expect(calledTodo).toEqual(newTodo);
   });
 });

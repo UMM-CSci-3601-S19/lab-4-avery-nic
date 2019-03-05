@@ -65,17 +65,79 @@ describe('Todo list', () => {
     page.getTodos().then(todos => {
       expect(todos.length).toBe(74);
     });
-  })
+  });
+  
   it('should allow us to filter by body', () => {
     page.typeInField('todoBody','esse');
     page.getTodos().then(todos => {
       expect(todos.length).toBe(77);
     });
   })
+  
   it('should allow us to filter by status', () => {
     page.typeInField('todoStatus','complete');
     page.getTodos().then(todos => {
       expect(todos.length).toBe(143);
     });
   })
+
+  it('Should have an add todo button', () => {
+    expect(page.elementExistsWithId('addNewTodo')).toBeTruthy();
+  });
+
+  it('Should open a dialog box when add user button is clicked', () => {
+    expect(page.elementExistsWithCss('add-todo')).toBeFalsy('There should not be a modal window yet');
+    page.click('addNewTodo');
+    expect(page.elementExistsWithCss('add-todo')).toBeTruthy('There should be a modal window now');
+  });
+
+  describe('Add Todo', () => {
+
+    beforeEach(() => {
+      page.navigateTo();
+      page.click('addNewTodo');
+    });
+
+    it('Should actually add the todo with the information we put in the fields', () => {
+      // could not write this test since the HTML in todo-list.component.html to add a unique id to every todo is broken.
+      // instead of inserting the _id, it inserts "[object Object]". I don't know why.
+    });
+
+    describe('Add Todo (Validation)', () => {
+
+      afterEach(() => {
+        page.click('exitWithoutAddingButton');
+      });
+
+      it('Should allow us to put information into the fields of the add todo dialog', () => {
+        expect(page.field('ownerField').isPresent()).toBeTruthy('There should be an owner field');
+        page.field('ownerField').sendKeys('Dana Jones');
+        expect(element(by.id('bodyField')).isPresent()).toBeTruthy('There should be a body field');
+        page.field('bodyField').sendKeys('Test body');
+        expect(page.field('categoryField').isPresent()).toBeTruthy('There should be a category field');
+        page.field('categoryField').sendKeys('cookies');
+      });
+
+      it('Should show the validation error message about owner being required', () => {
+        expect(element(by.id('ownerField')).isPresent()).toBeTruthy('There should be an owner field');
+        // '\b' is a backspace, so this enters an 'A' and removes it so this
+        // field is "dirty", i.e., it's seen as having changed so the validation
+        // tests are run.
+        page.field('ownerField').sendKeys('A\b');
+        expect(page.button('confirmAddTodoButton').isEnabled()).toBe(false);
+        //clicking somewhere else will make the error appear
+        page.field('categoryField').click();
+        expect(page.getTextFromField('owner-error')).toBe('A todo must have an owner');
+      });
+
+      it('Should show the validation error message about the format of owner', () => {
+        expect(element(by.id('ownerField')).isPresent()).toBeTruthy('There should be an owner field');
+        page.field('ownerField').sendKeys('Don@ld Jones');
+        expect(page.button('confirmAddTodoButton').isEnabled()).toBe(false);
+        //clicking somewhere else will make the error appear
+        page.field('categoryField').click();
+        expect(page.getTextFromField('owner-error')).toBe('Owner must contain only numbers and letters');
+      });
+    });
+  });
 });

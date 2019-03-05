@@ -17,6 +17,7 @@ export class TodoListComponent implements OnInit {
   public todoOwner: string;
   public todoCategory: string;
   public todoBody: string;
+  public todoStatus: string;
 
   constructor(public todoListService: TodoListService, public dialog: MatDialog) {
 
@@ -44,7 +45,7 @@ export class TodoListComponent implements OnInit {
     });
   }
 
-  public filterTodos(searchCategory: string, searchBody: string): Todo[]{
+  public filterTodos(searchCategory: string, searchBody: string, searchStatus: string): Todo[]{
 
     this.filteredTodos = this.todos;
 
@@ -64,6 +65,21 @@ export class TodoListComponent implements OnInit {
         return !searchBody || todo.body.toLocaleLowerCase().indexOf(searchBody) !== -1;
       });
     }
+    // Filter by status
+    if (searchStatus != null) {
+      searchStatus = searchStatus.toLocaleLowerCase();
+      if(searchStatus == "complete"){
+        this.filteredTodos = this.filteredTodos.filter(todo => {
+          return todo.status === true;
+        });
+      }
+      else if(searchStatus == "incomplete"){
+        this.filteredTodos = this.filteredTodos.filter(todo => {
+          return todo.status === false;
+        });
+      }
+    }
+
 
     return this.filteredTodos;
   }
@@ -73,7 +89,7 @@ export class TodoListComponent implements OnInit {
     todos.subscribe(
       todos => {
         this.todos = todos;
-        this.filterTodos(this.todoCategory, this.todoBody);
+        this.filterTodos(this.todoCategory, this.todoBody, this.todoStatus);
       },
       err => {
         console.log(err);

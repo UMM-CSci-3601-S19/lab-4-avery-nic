@@ -103,6 +103,29 @@ describe('TodoListComponent', () => {
       expect(todoList.filteredTodos.length).toBe(3);
     });
   });
+  it('todo list filters by status', () => {
+    expect(todoList.filteredTodos.length).toBe(3);
+    todoList.todoStatus = 'complete';
+    todoList.refreshTodos().subscribe(() => {
+      expect(todoList.filteredTodos.length).toBe(2);
+    });
+  });
+  it('todo list filters by category and status', () => {
+    expect(todoList.filteredTodos.length).toBe(3);
+    todoList.todoStatus = 'complete';
+    todoList.todoCategory = 'video games';
+    todoList.refreshTodos().subscribe(() => {
+      expect(todoList.filteredTodos.length).toBe(1);
+    });
+  });
+  it('todo list filters by body and status', () => {
+    expect(todoList.filteredTodos.length).toBe(3);
+    todoList.todoStatus = 'complete';
+    todoList.todoBody = 'Chris';
+    todoList.refreshTodos().subscribe(() => {
+      expect(todoList.filteredTodos.length).toBe(1);
+    });
+  });
 });
 
 describe('Adding a todo', () => {

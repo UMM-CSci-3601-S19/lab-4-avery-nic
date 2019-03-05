@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Todo} from "./todo";
 import {TodoListService} from "./todo-list.service";
 import {Observable} from 'rxjs/Observable';
+import {AddTodoComponent} from "./add-todo.component";
+import {MatDialog} from '@angular/material';
 
 @Component({
   selector: 'app-todo-list',
@@ -16,8 +18,30 @@ export class TodoListComponent implements OnInit {
   public todoCategory: string;
   public todoBody: string;
 
-  constructor(public todoListService: TodoListService) {
+  constructor(public todoListService: TodoListService, public dialog: MatDialog) {
 
+  }
+
+  openDialog(): void {
+    const newTodo: Todo = {_id: '', owner: '', body: '', status: false, category: ''};
+    const dialogRef = this.dialog.open(AddTodoComponent, {
+      width: '500px',
+      data: {todo: newTodo}
+    });
+
+    dialogRef.afterClosed().subscribe(newTodo => {
+      if (newTodo != null) {
+        this.todoListService.addNewTodo(newTodo).subscribe(
+          () => {
+            this.refreshTodos();
+          },
+          err => {
+            console.log('There was an error adding the todo.');
+            console.log('The newTodo or dialogResult was' + newTodo);
+            console.log('The error was ' + JSON.stringify(err));
+          });
+      }
+    });
   }
 
   public filterTodos(searchCategory: string, searchBody: string): Todo[]{

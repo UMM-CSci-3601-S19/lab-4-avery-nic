@@ -17,6 +17,7 @@ import {CustomModule} from './custom.module';
 import {AddUserComponent} from './users/add-user.component';
 import {TodoListComponent} from "./todo-list/todo-list.component";
 import { TodoListService } from "./todo-list/todo-list.service";
+import {AddTodoComponent} from "./todo-list/add-todo.component";
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { TodoListService } from "./todo-list/todo-list.service";
     UserListComponent,
     UserComponent,
     AddUserComponent,
-    TodoListComponent
+    TodoListComponent,
+    AddTodoComponent
   ],
   providers: [
     UserListService,
@@ -42,6 +44,7 @@ import { TodoListService } from "./todo-list/todo-list.service";
   ],
   entryComponents: [
     AddUserComponent,
+    AddTodoComponent
   ],
   bootstrap: [AppComponent]
 })

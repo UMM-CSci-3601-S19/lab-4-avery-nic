@@ -49,6 +49,18 @@ export class TodoListService {
     }
   }
 
+  addNewTodo(newTodo: Todo): Observable<string> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      responseType: 'text' as 'json'
+    };
+
+    // Send post request to add a new user with the user data as the body with specified headers.
+    return this.http.post<string>(this.todoUrl + '/new', newTodo, httpOptions);
+  }
+
   private parameterPresent(searchParam: string) {
     return this.todoUrl.indexOf(searchParam) !== -1;
   }
